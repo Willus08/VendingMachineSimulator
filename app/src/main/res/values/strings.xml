@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">VendingMachineSimulator</string>
     <string-array name="coins">
-        <item>Penny</item>
         <item>Nickel</item>
         <item>Dime</item>
         <item>Quarter</item>
-        <item>Half-Dollar</item>
+        <item>HalfDollar</item>
         <item>Dollar</item>
     </string-array>
 </resources>

@@ -42,12 +42,6 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.ViewHolder>{
 
             holder.coinsLeft.setText(""+customer.getCoinsInPocket().get(coin));
             switch (Enums.Currency.valueOf(coin.toUpperCase())){
-                case PENNY:
-                    // set image to the coins
-                    Picasso.with(holder.itemView.getContext())
-                            .load(R.drawable.penny_image)
-                            .into(holder.coinImage);
-                    break;
                 case NICKEL:
                     Picasso.with(holder.itemView.getContext())
                             .load(R.drawable.nickel_image)
@@ -66,7 +60,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.ViewHolder>{
                             .into(holder.coinImage);
                    // holder.coinImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.quarter_image));
                     break;
-                case HALF_DOLLAR:
+                case HALFDOLLAR:
                     Picasso.with(holder.itemView.getContext())
                             .load(R.drawable.half_dollar_image)
                             .into(holder.coinImage);

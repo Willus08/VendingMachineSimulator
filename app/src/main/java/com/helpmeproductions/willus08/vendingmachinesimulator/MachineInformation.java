@@ -24,7 +24,7 @@ public class MachineInformation {
     private void stockItems() {
         int itemsNumber = new Random().nextInt(50);
         for (int i = 0; i <itemsNumber ; i++) {
-            switch (new Random().nextInt(3)){
+            switch (new Random().nextInt(3)+1){
                 case 1:
                     if(itemsPossesed.containsKey("Coke")){
                         itemsPossesed.put("Coke",itemsPossesed.get("Coke")+1);
@@ -57,9 +57,8 @@ public class MachineInformation {
     // this will stock random amounts of Currency into the machine when made
     private void stockCoins() {
 
-        int coinsNumber = new Random().nextInt(50);
-        for (int i = 0; i <coinsNumber ; i++) {
-            switch (new Random().nextInt(3)){
+        for (int i = 0; i <50 ; i++) {
+            switch (new Random().nextInt(3)+1){
                 case 1:
                     if(currencyPosseed.containsKey(Enums.Currency.QUARTER.toString())){
                         currencyPosseed.put(Enums.Currency.QUARTER.toString(),
@@ -106,31 +105,7 @@ public class MachineInformation {
     public Map<String,Integer> despinceItem(String item){
         if(checkStock(item)){
             itemsPossesed.put(item, itemsPossesed.get(item)-1);
-            int paid = 0;
             for (String key: currencyInserted.keySet()) {
-
-                switch (Enums.Currency.valueOf(key.toUpperCase())){
-                    case PENNY:
-                        paid += Enums.Currency.PENNY.getValue()* currencyInserted.get(key);
-                        break;
-                    case NICKEL:
-                        paid += Enums.Currency.NICKEL.getValue()* currencyInserted.get(key);
-                        break;
-                    case DIME:
-                        paid += Enums.Currency.DIME.getValue()* currencyInserted.get(key);
-                        break;
-                    case QUARTER:
-                        paid += Enums.Currency.QUARTER.getValue()* currencyInserted.get(key);
-                        break;
-                    case HALF_DOLLAR:
-                        paid += Enums.Currency.HALF_DOLLAR.getValue()* currencyInserted.get(key);
-                        break;
-                    case DOLLAR:
-                        paid += Enums.Currency.DOLLAR.getValue()* currencyInserted.get(key);
-                        break;
-
-                }
-
 
                 if(currencyPosseed.containsKey(key)){
                  currencyPosseed.put(key, currencyPosseed.get(key)+ currencyInserted.get(key));
@@ -140,7 +115,7 @@ public class MachineInformation {
 
             }
             currencyInserted.clear();
-           return calculateReturn(item,paid);
+           return calculateReturn(item,calculateCoinsInserted());
             // this will return an empty map so that we can tell the user know it is out of stock
         }else {
             return new HashMap<>();
@@ -190,12 +165,12 @@ public class MachineInformation {
                 }else{
                     rCoins.put(Enums.Currency.DOLLAR.toString(),1);
                 }
-            }else if ( amountToReturn - Enums.Currency.HALF_DOLLAR.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.HALF_DOLLAR.toString())){
-                    rCoins.put(Enums.Currency.HALF_DOLLAR.toString(),
-                            rCoins.get(Enums.Currency.HALF_DOLLAR.toString())+1);
+            }else if ( amountToReturn - Enums.Currency.HALFDOLLAR.getValue() >=0){
+                if (rCoins.containsKey(Enums.Currency.HALFDOLLAR.toString())){
+                    rCoins.put(Enums.Currency.HALFDOLLAR.toString(),
+                            rCoins.get(Enums.Currency.HALFDOLLAR.toString())+1);
                 }else{
-                    rCoins.put(Enums.Currency.HALF_DOLLAR.toString(),1);
+                    rCoins.put(Enums.Currency.HALFDOLLAR.toString(),1);
                 }
             }else if ( amountToReturn - Enums.Currency.QUARTER.getValue() >=0){
                 if (rCoins.containsKey(Enums.Currency.QUARTER.toString())){
@@ -218,13 +193,7 @@ public class MachineInformation {
                 }else{
                     rCoins.put(Enums.Currency.NICKEL.toString(),1);
                 }
-            }else if ( amountToReturn - Enums.Currency.PENNY.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.PENNY.toString())){
-                    rCoins.put(Enums.Currency.PENNY.toString(),
-                            rCoins.get(Enums.Currency.PENNY.toString())+1);
-                }else{
-                    rCoins.put(Enums.Currency.PENNY.toString(),1);
-                }
+
             }
 
         }
@@ -272,9 +241,6 @@ public class MachineInformation {
         for (String key: currencyInserted.keySet()) {
 
             switch (Enums.Currency.valueOf(key.toUpperCase())) {
-                case PENNY:
-                    amount += Enums.Currency.PENNY.getValue() * currencyInserted.get(key);
-                    break;
                 case NICKEL:
                     amount += Enums.Currency.NICKEL.getValue() * currencyInserted.get(key);
                     break;
@@ -284,8 +250,8 @@ public class MachineInformation {
                 case QUARTER:
                     amount += Enums.Currency.QUARTER.getValue() * currencyInserted.get(key);
                     break;
-                case HALF_DOLLAR:
-                    amount += Enums.Currency.HALF_DOLLAR.getValue() * currencyInserted.get(key);
+                case HALFDOLLAR:
+                    amount += Enums.Currency.HALFDOLLAR.getValue() * currencyInserted.get(key);
                     break;
                 case DOLLAR:
                     amount += Enums.Currency.DOLLAR.getValue() * currencyInserted.get(key);

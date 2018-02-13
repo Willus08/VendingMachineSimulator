@@ -18,7 +18,7 @@ public class CustomerInformation {
     private void fillPockets() {
 
         for (int i = 0; i < 50 ; i++) {
-            switch (new Random().nextInt(5)){
+            switch (new Random().nextInt(5)+1){
                 case 1:
                     if(coinsInPocket.containsKey(Enums.Currency.QUARTER.toString())){
                         coinsInPocket.put(Enums.Currency.QUARTER.toString(),
@@ -44,11 +44,11 @@ public class CustomerInformation {
                     }
                     break;
                 case 4:
-                    if(coinsInPocket.containsKey(Enums.Currency.HALF_DOLLAR.toString())){
-                        coinsInPocket.put(Enums.Currency.HALF_DOLLAR.toString(),
-                                coinsInPocket.get(Enums.Currency.HALF_DOLLAR.toString())+1);
+                    if(coinsInPocket.containsKey(Enums.Currency.HALFDOLLAR.toString())){
+                        coinsInPocket.put(Enums.Currency.HALFDOLLAR.toString(),
+                                coinsInPocket.get(Enums.Currency.HALFDOLLAR.toString())+1);
                     }else {
-                        coinsInPocket.put(Enums.Currency.HALF_DOLLAR.toString(),1);
+                        coinsInPocket.put(Enums.Currency.HALFDOLLAR.toString(),1);
                     }
                     break;
                 case 5:

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -29,6 +32,8 @@ public class MainScreen extends AppCompatActivity {
     DefaultItemAnimator animator;
     IntentFilter filter;
     private Receiver reciever;
+    private CountDownTimer displaytimer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,21 @@ public class MainScreen extends AppCompatActivity {
         coinsView.setLayoutManager(layoutManager);
         coinsView.setItemAnimator(animator);
 
+        displaytimer = new CountDownTimer(3000,1) {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                resetDisplay();
+            }
+        };
+
+
     }
+
 
     @Override
     protected void onStart() {
@@ -60,11 +79,7 @@ public class MainScreen extends AppCompatActivity {
         filter=new IntentFilter("useMoney");
         reciever=new Receiver();
         registerReceiver(reciever,filter);
-       if (vendingMachine.checkIfExactChangeRequired()){
-           display.setText("Exact Change Only");
-       }else{
-           display.setText("Insert Coins");
-       }
+        resetDisplay();
     }
 
     @Override
@@ -81,6 +96,18 @@ public class MainScreen extends AppCompatActivity {
             display.setText("$ 0."+ amount);
         }else {
             display.setText("$ "+ amount/100 + "." + amount%100);
+        }
+        adapter = new CoinsAdapter(customer,coinsList);
+        coinsView.setAdapter(adapter);
+        displaytimer.start();
+
+    }
+
+    private void resetDisplay() {
+        if (vendingMachine.checkIfExactChangeRequired()){
+            display.setText("Exact Change Only");
+        }else{
+            display.setText("Insert Coins");
         }
     }
 
@@ -128,6 +155,7 @@ public class MainScreen extends AppCompatActivity {
            adapter = new CoinsAdapter(customer,coinsList);
            coinsView.setAdapter(adapter);
        }
+       displaytimer.start();
     }
 
     class Receiver extends BroadcastReceiver{

@@ -4,11 +4,10 @@ package com.helpmeproductions.willus08.vendingmachinesimulator;
 
 public class Enums {
     public enum Currency {
-        PENNY("Penny", 1),
         NICKEL("Nickel",5),
         DIME("Dime",10),
         QUARTER("Quarter",25),
-        HALF_DOLLAR("Half Dollar", 50),
+        HALFDOLLAR("HalfDollar", 50),
         DOLLAR("Dollar", 100);
 
 
