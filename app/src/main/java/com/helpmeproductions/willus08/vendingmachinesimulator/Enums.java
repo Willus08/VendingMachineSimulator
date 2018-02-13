@@ -28,29 +28,6 @@ public class Enums {
         }
     }
 
-//    public enum dollars{
-//        ONE("One" ,100),
-//        FIVE("Five", 500),
-//        TEN("Ten", 1000),
-//        TWENTY("Twenty", 2000);
-//
-//        private String stringValue;
-//        private int intValue;
-//        dollars(String toString, int value) {
-//            stringValue = toString;
-//            intValue = value;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return stringValue;
-//        }
-//
-//        public int getValue(){
-//            return intValue;
-//        }
-//    }
-
     public enum items{
         COKE("Coke", 100),
         CANDY("Candy",65),

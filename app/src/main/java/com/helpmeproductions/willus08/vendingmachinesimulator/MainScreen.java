@@ -31,7 +31,11 @@ public class MainScreen extends AppCompatActivity {
     CoinsAdapter adapter;
     List<String> coinsList = new ArrayList<>();
     RecyclerView.LayoutManager layoutManager;
+    RecyclerView.LayoutManager itemManager;
     DefaultItemAnimator animator;
+    ItemsAdapter itemsAdapter;
+    List<String> itemsList = new ArrayList<>();
+    RecyclerView itemsView;
     IntentFilter filter;
     private Receiver reciever;
     private CountDownTimer displaytimer;
@@ -48,16 +52,23 @@ public class MainScreen extends AppCompatActivity {
 
         display = findViewById(R.id.tvDisplay);
         coinsView = findViewById(R.id.rvCoins);
-
+        itemsView = findViewById(R.id.rvItems);
         coinsList.addAll(Arrays.asList(getResources().getStringArray(R.array.coins)));
+        itemsList.addAll(Arrays.asList(getResources().getStringArray(R.array.items)));
 
+        itemsAdapter = new ItemsAdapter(customer,itemsList);
         adapter = new CoinsAdapter(customer, coinsList);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        itemManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         animator = new DefaultItemAnimator();
 
         coinsView.setAdapter(adapter);
         coinsView.setLayoutManager(layoutManager);
         coinsView.setItemAnimator(animator);
+
+        itemsView.setAdapter(itemsAdapter);
+        itemsView.setLayoutManager(itemManager);
+        itemsView.setItemAnimator(animator);
 
         displaytimer = new CountDownTimer(3000,1) {
             @Override
@@ -149,6 +160,9 @@ public class MainScreen extends AppCompatActivity {
                    customer.reciveMoney(vendingMachine.buyItem(item));
                    adapter = new CoinsAdapter(customer,coinsList);
                    coinsView.setAdapter(adapter);
+
+                   itemsAdapter = new ItemsAdapter(customer,itemsList);
+                   itemsView.setAdapter(itemsAdapter);
 
                }
            }else {
