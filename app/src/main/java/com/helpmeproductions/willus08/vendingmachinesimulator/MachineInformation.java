@@ -21,7 +21,7 @@ public class MachineInformation {
     }
 
     // this will put random amounts of each item in the machine once it is made
-    private void stockItems() {
+    public void stockItems() {
         int itemsNumber = new Random().nextInt(50);
         for (int i = 0; i <itemsNumber ; i++) {
             switch (new Random().nextInt(3)+1){
@@ -55,7 +55,7 @@ public class MachineInformation {
     }
 
     // this will stock random amounts of Currency into the machine when made
-    private void stockCoins() {
+    public void stockCoins() {
 
         for (int i = 0; i <50 ; i++) {
             switch (new Random().nextInt(5)+1){
@@ -138,7 +138,7 @@ public class MachineInformation {
     }
 
     // this will check the remaining coins in the machine to see if wee need to be in exactchange mode
-    private void checkRemainingCoins() {
+    public void checkRemainingCoins() {
 
         if(currencyPosseed.containsKey(Enums.Currency.QUARTER.toString())) {
             if (currencyPosseed.get(Enums.Currency.QUARTER.toString()) < 4){
@@ -208,7 +208,7 @@ public class MachineInformation {
     }
 
     // this will take the money inserted into the machine fully
-    private void takeMoney(){
+    public void takeMoney(){
 
             for (String key: currencyInserted.keySet()) {
 
@@ -223,7 +223,7 @@ public class MachineInformation {
     }
 
     // will calculate what money needs to be returned based on the value
-    private Map<String,Integer> calculateReturn(String item, int paid){
+    public Map<String,Integer> calculateReturn(String item, int paid){
         int cost=0;
         Map<String, Integer> rCoins = new HashMap<>();
         switch(Enums.items.valueOf(item.toUpperCase())){
