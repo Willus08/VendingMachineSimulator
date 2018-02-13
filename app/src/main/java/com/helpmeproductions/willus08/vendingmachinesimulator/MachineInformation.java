@@ -58,7 +58,7 @@ public class MachineInformation {
     private void stockCoins() {
 
         for (int i = 0; i <50 ; i++) {
-            switch (new Random().nextInt(3)+1){
+            switch (new Random().nextInt(5)+1){
                 case 1:
                     if(currencyPosseed.containsKey(Enums.Currency.QUARTER.toString())){
                         currencyPosseed.put(Enums.Currency.QUARTER.toString(),
@@ -83,6 +83,22 @@ public class MachineInformation {
                         currencyPosseed.put(Enums.Currency.NICKEL.toString(),1);
                     }
                     break;
+                case 4:
+                    if(currencyPosseed.containsKey(Enums.Currency.HALFDOLLAR.toString())){
+                        currencyPosseed.put(Enums.Currency.HALFDOLLAR.toString(),
+                                currencyPosseed.get(Enums.Currency.HALFDOLLAR.toString())+1);
+                    }else {
+                        currencyPosseed.put(Enums.Currency.HALFDOLLAR.toString(),1);
+                    }
+                    break;
+                case 5:
+                    if(currencyPosseed.containsKey(Enums.Currency.DOLLAR.toString())){
+                        currencyPosseed.put(Enums.Currency.DOLLAR.toString(),
+                                currencyPosseed.get(Enums.Currency.DOLLAR.toString())+1);
+                    }else {
+                        currencyPosseed.put(Enums.Currency.DOLLAR.toString(),1);
+                    }
+                    break;
                 default:
                     i--;
             }
@@ -103,28 +119,6 @@ public class MachineInformation {
         return temp;
     }
 
-    // this will remove one item from its invintory and move the price to
-    // its currency and then return the remaing money
-    public Map<String,Integer> despinceItem(String item){
-        if(checkStock(item)){
-            itemsPossesed.put(item, itemsPossesed.get(item)-1);
-            for (String key: currencyInserted.keySet()) {
-
-                if(currencyPosseed.containsKey(key)){
-                 currencyPosseed.put(key, currencyPosseed.get(key)+ currencyInserted.get(key));
-                }else{
-                 currencyPosseed.put(key, currencyInserted.get(key));
-                }
-
-            }
-            currencyInserted.clear();
-           return calculateReturn(item,calculateCoinsInserted());
-            // this will return an empty map so that we can tell the user know it is out of stock
-        }else {
-            return new HashMap<>();
-        }
-    }
-
     // this will check if the item is in stock to be purchesed
     public boolean checkStock(String item){
         if (itemsPossesed.containsKey(item)){
@@ -141,68 +135,6 @@ public class MachineInformation {
         else {
             currencyInserted.put(curency,1);
         }
-    }
-
-    // will calculate what money needs to be returned based on the value
-    private Map<String,Integer> calculateReturn(String item, int paid){
-        int cost=0;
-        Map<String, Integer> rCoins = new HashMap<>();
-        switch(Enums.items.valueOf(item.toUpperCase())){
-            case COKE:
-                cost = Enums.items.COKE.getValue();
-                break;
-            case CANDY:
-                cost = Enums.items.CANDY.getValue();
-                break;
-            case CHIPS:
-                cost = Enums.items.CHIPS.getValue();
-                break;
-        }
-
-        int amountToReturn = paid - cost;
-        while (amountToReturn > 0){
-            if(amountToReturn - Enums.Currency.DOLLAR.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.DOLLAR.toString())){
-                    rCoins.put(Enums.Currency.DOLLAR.toString(),
-                            rCoins.get(Enums.Currency.DOLLAR.toString())+1);
-                }else{
-                    rCoins.put(Enums.Currency.DOLLAR.toString(),1);
-                }
-            }else if ( amountToReturn - Enums.Currency.HALFDOLLAR.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.HALFDOLLAR.toString())){
-                    rCoins.put(Enums.Currency.HALFDOLLAR.toString(),
-                            rCoins.get(Enums.Currency.HALFDOLLAR.toString())+1);
-                }else{
-                    rCoins.put(Enums.Currency.HALFDOLLAR.toString(),1);
-                }
-            }else if ( amountToReturn - Enums.Currency.QUARTER.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.QUARTER.toString())){
-                    rCoins.put(Enums.Currency.QUARTER.toString(),
-                            rCoins.get(Enums.Currency.QUARTER.toString())+1);
-                }else{
-                    rCoins.put(Enums.Currency.QUARTER.toString(),1);
-                }
-            }else if ( amountToReturn - Enums.Currency.DIME.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.DIME.toString())){
-                    rCoins.put(Enums.Currency.DIME.toString(),
-                            rCoins.get(Enums.Currency.DIME.toString())+1);
-                }else{
-                    rCoins.put(Enums.Currency.DIME.toString(),1);
-                }
-            }else if ( amountToReturn - Enums.Currency.NICKEL.getValue() >=0){
-                if (rCoins.containsKey(Enums.Currency.NICKEL.toString())){
-                    rCoins.put(Enums.Currency.NICKEL.toString(),
-                            rCoins.get(Enums.Currency.NICKEL.toString())+1);
-                }else{
-                    rCoins.put(Enums.Currency.NICKEL.toString(),1);
-                }
-
-            }
-
-        }
-        checkRemainingCoins();
-
-        return rCoins;
     }
 
     // this will check the remaining coins in the machine to see if wee need to be in exactchange mode
@@ -264,4 +196,128 @@ public class MachineInformation {
         }
       return amount;
     }
+
+    public Map<String,Integer> buyItem(String item){
+        int paid = calculateCoinsInserted();
+        itemsPossesed.put(item, itemsPossesed.get(item)-1);
+        takeMoney();
+        Map<String,Integer> temp = new HashMap<>();
+        temp =  calculateReturn(item,paid);
+        return temp;
+
+    }
+
+    // this will take the money inserted into the machine fully
+    private void takeMoney(){
+
+            for (String key: currencyInserted.keySet()) {
+
+                if(currencyPosseed.containsKey(key)){
+                    currencyPosseed.put(key, currencyPosseed.get(key)+ currencyInserted.get(key));
+                }else{
+                    currencyPosseed.put(key, currencyInserted.get(key));
+                }
+
+            }
+            currencyInserted.clear();
+    }
+
+    // will calculate what money needs to be returned based on the value
+    private Map<String,Integer> calculateReturn(String item, int paid){
+        int cost=0;
+        Map<String, Integer> rCoins = new HashMap<>();
+        switch(Enums.items.valueOf(item.toUpperCase())){
+            case COKE:
+                cost = Enums.items.COKE.getValue();
+                break;
+            case CANDY:
+                cost = Enums.items.CANDY.getValue();
+                break;
+            case CHIPS:
+                cost = Enums.items.CHIPS.getValue();
+                break;
+        }
+
+        int amountToReturn = paid - cost;
+        while (amountToReturn > 0){
+            if (amountToReturn - Enums.Currency.DOLLAR.getValue() >= 0) {
+            if(currencyPosseed.containsKey(Enums.Currency.DOLLAR.toString())
+                    && currencyPosseed.get(Enums.Currency.DOLLAR.toString()) > 0) {
+
+
+                        if (rCoins.containsKey(Enums.Currency.DOLLAR.toString())) {
+                            rCoins.put(Enums.Currency.DOLLAR.toString(),
+                                    rCoins.get(Enums.Currency.DOLLAR.toString()) + 1);
+                        } else {
+                            rCoins.put(Enums.Currency.DOLLAR.toString(), 1);
+                        }
+
+                        amountToReturn -= Enums.Currency.DOLLAR.getValue();
+                        currencyPosseed.put(Enums.Currency.DOLLAR.toString(),
+                                currencyPosseed.get(Enums.Currency.DOLLAR.toString())-1);
+
+                }
+            }else if ( amountToReturn - Enums.Currency.HALFDOLLAR.getValue() >=0) {
+                if(currencyPosseed.containsKey(Enums.Currency.HALFDOLLAR.toString())
+                    && currencyPosseed.get(Enums.Currency.HALFDOLLAR.toString()) > 0){
+
+                    if (rCoins.containsKey(Enums.Currency.HALFDOLLAR.toString())) {
+                        rCoins.put(Enums.Currency.HALFDOLLAR.toString(),
+                                rCoins.get(Enums.Currency.HALFDOLLAR.toString()) + 1);
+                    } else {
+                        rCoins.put(Enums.Currency.HALFDOLLAR.toString(), 1);
+                    }
+                    amountToReturn -= Enums.Currency.HALFDOLLAR.getValue();
+                    currencyPosseed.put(Enums.Currency.HALFDOLLAR.toString(),
+                            currencyPosseed.get(Enums.Currency.HALFDOLLAR.toString())-1);
+                }
+            }else  if ( amountToReturn - Enums.Currency.QUARTER.getValue() >=0){
+                if(currencyPosseed.containsKey(Enums.Currency.QUARTER.toString())
+                        && currencyPosseed.get(Enums.Currency.QUARTER.toString()) > 0){
+
+                        if (rCoins.containsKey(Enums.Currency.QUARTER.toString())){
+                            rCoins.put(Enums.Currency.QUARTER.toString(),
+                                    rCoins.get(Enums.Currency.QUARTER.toString())+1);
+                        }else{
+                            rCoins.put(Enums.Currency.QUARTER.toString(),1);
+                        }
+                        amountToReturn -= Enums.Currency.QUARTER.getValue();
+                        currencyPosseed.put(Enums.Currency.QUARTER.toString(),
+                                currencyPosseed.get(Enums.Currency.QUARTER.toString())-1);
+                    }
+            }else if ( amountToReturn - Enums.Currency.DIME.getValue() >=0) {
+                if(currencyPosseed.containsKey(Enums.Currency.DIME.toString())
+                            && currencyPosseed.get(Enums.Currency.DIME.toString()) > 0){
+
+                            if (rCoins.containsKey(Enums.Currency.DIME.toString())) {
+                                rCoins.put(Enums.Currency.DIME.toString(),
+                                        rCoins.get(Enums.Currency.DIME.toString()) + 1);
+                            } else {
+                                rCoins.put(Enums.Currency.DIME.toString(), 1);
+                            }
+                            amountToReturn -= Enums.Currency.DIME.getValue();
+                            currencyPosseed.put(Enums.Currency.DIME.toString(),
+                                    currencyPosseed.get(Enums.Currency.DIME.toString())-1);
+                        }
+            }else if(currencyPosseed.containsKey(Enums.Currency.NICKEL.toString())
+                                && currencyPosseed.get(Enums.Currency.NICKEL.toString()) > 0){
+                            if ( amountToReturn - Enums.Currency.NICKEL.getValue() >=0){
+                                if (rCoins.containsKey(Enums.Currency.NICKEL.toString())){
+                                    rCoins.put(Enums.Currency.NICKEL.toString(),
+                                            rCoins.get(Enums.Currency.NICKEL.toString())+1);
+                                }else{
+                                    rCoins.put(Enums.Currency.NICKEL.toString(),1);
+                                }
+                                amountToReturn -= Enums.Currency.NICKEL.getValue();
+                                currencyPosseed.put(Enums.Currency.NICKEL.toString(),
+                                        currencyPosseed.get(Enums.Currency.NICKEL.toString())-1);
+
+                            }
+                        }
+        }
+        checkRemainingCoins();
+
+        return rCoins;
+    }
+
 }

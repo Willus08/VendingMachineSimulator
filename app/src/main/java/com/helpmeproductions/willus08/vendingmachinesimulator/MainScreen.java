@@ -146,7 +146,7 @@ public class MainScreen extends AppCompatActivity {
                }else {
                    display.setText("Vend");
                    customer.reciveItem(item);
-                   customer.reciveMoney(vendingMachine.despinceItem(item));
+                   customer.reciveMoney(vendingMachine.buyItem(item));
                    adapter = new CoinsAdapter(customer,coinsList);
                    coinsView.setAdapter(adapter);
 
