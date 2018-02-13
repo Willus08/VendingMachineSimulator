@@ -95,7 +95,10 @@ public class MachineInformation {
     // this will return all the currency the customer has put into the machine
     // if they change their mind and dont want to purchase anything
     public Map<String,Integer> returnCurrency(){
-        Map<String,Integer> temp = currencyInserted;
+        Map<String,Integer> temp = new HashMap<>();
+        for (String key: currencyInserted.keySet()) {
+            temp.put(key,currencyInserted.get(key));
+        }
         currencyInserted.clear();
         return temp;
     }

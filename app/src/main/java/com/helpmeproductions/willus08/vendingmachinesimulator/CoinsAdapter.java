@@ -36,8 +36,6 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final String coin = coinsList.get(position);
-        Log.d("test coin values", "onBindViewHolder: " + coin +customer.getCoinsInPocket().get(coin) + customer.getCoinsInPocket().keySet().isEmpty());
-        Log.d("truth", "onBindViewHolder: " + customer.getCoinsInPocket().containsKey(coin));
         if(customer.getCoinsInPocket().containsKey(coin)){
 
             holder.coinsLeft.setText(""+customer.getCoinsInPocket().get(coin));

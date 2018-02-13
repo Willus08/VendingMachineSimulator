@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -127,8 +129,10 @@ public class MainScreen extends AppCompatActivity {
                 item = Enums.items.CANDY.toString();
                 cost = Enums.items.CANDY.getValue();
                 break;
-            default:
+            case R.id.btnReturn:
                 customer.reciveMoney(vendingMachine.returnCurrency());
+                adapter = new CoinsAdapter(customer,coinsList);
+                coinsView.setAdapter(adapter);
 
         }
        if(!item.equals("")){
@@ -151,9 +155,7 @@ public class MainScreen extends AppCompatActivity {
                display.setText("Out of Stock");
            }
        }else {
-           display.setText("Insert Coins");
-           adapter = new CoinsAdapter(customer,coinsList);
-           coinsView.setAdapter(adapter);
+           display.setText("Returned");
        }
        displaytimer.start();
     }
